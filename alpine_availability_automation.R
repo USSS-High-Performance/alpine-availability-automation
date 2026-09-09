@@ -4,7 +4,6 @@ library(tidyr)
 library(lubridate)
 library(purrr)
 library(dotenv)
-load_dot_env(".env")
 
 url <- "usopc.smartabase.com/athlete360-usss"
 username <- Sys.getenv("SB_USERNAME")
