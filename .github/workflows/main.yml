@@ -43,7 +43,7 @@ jobs:
             any::lubridate
             any::purrr
             any::dotenv
-            github::OWNER/smartabaseR
+            github::Teamworksapp/smartabaseR
 
-      - name: Run alpine-availability-automation.R
-        run: Rscript alpine-availability-automation.R
+      - name: Run alpine_availability_automation.R
+        run: Rscript alpine_availability_automation.R
