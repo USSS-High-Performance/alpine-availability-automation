@@ -1,0 +1,82 @@
+library(smartabaseR)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(purrr)
+library(dotenv)
+load_dot_env(".env")
+
+url <- "usopc.smartabase.com/athlete360-usss"
+username <- Sys.getenv("SB_USERNAME")
+password <- Sys.getenv("SB_PASSWORD")
+  
+source_form <- 'Alpine Availability Form'
+target_form <- 'Alpine Availability Email Push'
+
+upload_user_id <- 27306
+  
+today_str <- format(Sys.Date(), "%d/%m/%Y")
+
+#get data
+fetch_source_data <- function() {
+  sb_get_event(
+    form       = source_form,
+    date_range = c("01/01/2026", today_str),
+    url        = url,
+    username   = username,
+    password   = password,
+    filter = sb_get_event_filter(user_key = "current_group")
+  )
+}
+
+#slice
+latest_per_athlete <- function(data) {
+  data %>%
+    group_by(Athlete) %>%
+    slice_max(order_by = event_id, n = 1) %>%
+    ungroup()
+}
+
+#Combined Pull and Slice
+get_source_data_v3 <- function() {
+  fetch_source_data() %>%
+    latest_per_athlete()
+}
+
+source_data <- get_source_data_v3()
+#glimpse(source_data) - check data
+
+#STEP 2 - MANIPULATE
+#manipulate into target table shape
+manipulated_data <- source_data %>%
+  transmute(
+    #target form field names                             = #source form field names
+    `Athlete`                                            = `Athlete`,
+    `Availability`                                       = `Availability`,
+    `Notes`                                              = `Brief Notes (Optional)`
+  ) %>%
+  arrange(`Athlete`)
+
+#glimpse(manipulated_data) - check data
+
+#STEP 3 - PUSH DATA
+upload_data <- manipulated_data %>%
+  mutate(
+    user_id    = upload_user_id,   # same for every row -> triggers table grouping
+    start_date = today_str
+  ) %>%
+  select(user_id, start_date, everything())
+
+#glimpse(upload_data) - check data
+
+
+sb_insert_event(
+  df       = upload_data,
+  form     = target_form,
+  url      = url,
+  username = username,
+  password = password,
+  option   = sb_insert_event_option(
+  table_field = c("Athlete", "Availability", "Notes")
+  )
+)
