@@ -32,6 +32,8 @@ jobs:
           r-version: release
           use-public-rspm: true
 
+      # Note: pak reads every line below as a package reference.
+      # Do not put comments inside the `packages:` block.
       - name: Install R packages
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -41,7 +43,7 @@ jobs:
             any::lubridate
             any::purrr
             any::dotenv
-            github::OWNER/smartabaseR   # <-- replace OWNER with the real GitHub org for smartabaseR
+            github::OWNER/smartabaseR
 
       - name: Run alpine-availability-automation.R
         run: Rscript alpine-availability-automation.R
