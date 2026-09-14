@@ -4,7 +4,7 @@ on:
   schedule:
     # 13:00 UTC daily = 06:00 Mountain Standard / 07:00 Mountain Daylight.
     # GitHub cron is always UTC and does not shift for DST.
-    - cron: "0 13 * * *"
+    - cron: "0 10 * * *"
   workflow_dispatch: {}   # also lets you trigger a run by hand from the Actions tab
 
 # Don't let a slow run overlap with the next scheduled one.
