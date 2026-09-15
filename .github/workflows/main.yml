@@ -2,10 +2,11 @@ name: Alpine Availability Automation
 
 on:
   schedule:
-    # 13:00 UTC daily = 06:00 Mountain Standard / 07:00 Mountain Daylight.
-    # GitHub cron is always UTC and does not shift for DST.
-    - cron: "0 10 * * *"
-  workflow_dispatch: {}   # also lets you trigger a run by hand from the Actions tab
+    # Every 2 hours, on the hour (00:00, 02:00, ... UTC). Scheduled workflows
+    # only run on the repo's default branch - this won't fire until this
+    # workflow file is merged there.
+    - cron: "0 */2 * * *"
+  workflow_dispatch: {}
 
 # Don't let a slow run overlap with the next scheduled one.
 concurrency:
