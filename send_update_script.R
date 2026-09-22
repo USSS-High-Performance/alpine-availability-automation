@@ -11,6 +11,7 @@ url <- "usopc.smartabase.com/athlete360-usss"
 username <- Sys.getenv("SB_USERNAME")
 password <- Sys.getenv("SB_PASSWORD")
 
+Sys.setenv(TZ = "America/Denver")
 current_time <- Sys.time()
 min_window <- current_time - 900
 max_window <- current_time + 900
@@ -75,19 +76,18 @@ pushed <- prior_pushes$Group[!is.na(prior_pushes$Group) &
                                push_time < max_window]
 
 #debugging
-cat("---- DEBUG ----\n")
-print(Sys.time())
-print(Sys.timezone())
-print(Sys.getlocale("LC_TIME"))
-print(nrow(source_data))
-print(c(min_tod = min_tod, max_tod = max_tod))
-print(head(event_tod, 10))
-print(sum(!is.na(event_tod)))
-print(c(min_window, max_window))
-print(pushed)
-print(sum(!is.na(event_tod) & event_tod > min_tod & event_tod < max_tod))
-cat("---------------\n")
-
+#cat("---- DEBUG ----\n")
+#print(Sys.time())
+#print(Sys.timezone())
+#print(Sys.getlocale("LC_TIME"))
+#print(nrow(source_data))
+#print(c(min_tod = min_tod, max_tod = max_tod))
+#print(head(event_tod, 10))
+#print(sum(!is.na(event_tod)))
+#print(c(min_window, max_window))
+#print(pushed)
+#print(sum(!is.na(event_tod) & event_tod > min_tod & event_tod < max_tod))
+#cat("---------------\n")
 
 #Creating specific time window variable
 window <- !is.na(event_tod) & event_tod > min_tod & event_tod < max_tod &
