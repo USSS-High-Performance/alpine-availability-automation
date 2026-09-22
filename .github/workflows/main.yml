@@ -21,6 +21,7 @@ jobs:
       # These replace the .env file. Sys.getenv() in the script reads them unchanged.
       SB_USERNAME: ${{ secrets.SB_USERNAME }}
       SB_PASSWORD: ${{ secrets.SB_PASSWORD }}
+      TZ: America/Denver
 
     steps:
       - name: Check out repository
