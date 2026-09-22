@@ -25,8 +25,8 @@ min_tod <- now_tod - 900
 max_tod <- now_tod + 900
 
 
-source_form_1 <- 'Alpine Availability Send Times'
-email_form   <- 'Alpine Availability Email Push'
+source_form_1 <- 'Availability Send Times'
+email_form   <- 'Availability Email Push'
 
 upload_user_id <- 27306
 
