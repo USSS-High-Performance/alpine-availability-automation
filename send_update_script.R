@@ -74,6 +74,21 @@ pushed <- prior_pushes$Group[!is.na(prior_pushes$Group) &
                                push_time > min_window &
                                push_time < max_window]
 
+#debugging
+cat("---- DEBUG ----\n")
+print(Sys.time())
+print(Sys.timezone())
+print(Sys.getlocale("LC_TIME"))
+print(nrow(source_data))
+print(c(min_tod = min_tod, max_tod = max_tod))
+print(head(event_tod, 10))
+print(sum(!is.na(event_tod)))
+print(c(min_window, max_window))
+print(pushed)
+print(sum(!is.na(event_tod) & event_tod > min_tod & event_tod < max_tod))
+cat("---------------\n")
+
+
 #Creating specific time window variable
 window <- !is.na(event_tod) & event_tod > min_tod & event_tod < max_tod &
   !(source_data$`Pod/Group Name` %in% pushed)
