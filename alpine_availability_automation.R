@@ -9,8 +9,8 @@ url <- "usopc.smartabase.com/athlete360-usss"
 username <- Sys.getenv("SB_USERNAME")
 password <- Sys.getenv("SB_PASSWORD")
   
-source_form <- 'Alpine Availability Form'
-target_form <- 'Alpine Availability Email Push'
+source_form <- 'Availability Form'
+target_form <- 'Availability Email Push'
 
 upload_user_id <- 27306
   
