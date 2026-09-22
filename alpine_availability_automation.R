@@ -24,9 +24,11 @@ fetch_source_data <- function() {
     url        = url,
     username   = username,
     password   = password,
-    filter = sb_get_event_filter(user_key = "current_group")
+    filter = sb_get_event_filter(user_key = "group",
+    user_value = current_group)
   )
 }
+print(fetch_source_data())
 
 #slice
 latest_per_athlete <- function(data) {
@@ -36,10 +38,21 @@ latest_per_athlete <- function(data) {
     ungroup()
 }
 
+#date manipulation
+add_days_since_record <- function(data) {
+  data %>%
+    mutate(
+      record_date    = as.Date(start_date, format = "%d/%m/%Y"),
+      days_since     = as.integer(Sys.Date() - record_date),
+      `Last Updated` = paste0(days_since, " days ago")
+    )
+}
+
 #Combined Pull and Slice
 get_source_data_v3 <- function() {
   fetch_source_data() %>%
-    latest_per_athlete()
+    latest_per_athlete() %>%
+    add_days_since_record()
 }
 
 source_data <- get_source_data_v3()
@@ -52,7 +65,9 @@ manipulated_data <- source_data %>%
     #target form field names                             = #source form field names
     `Athlete`                                            = `Athlete`,
     `Availability`                                       = `Availability`,
-    `Notes`                                              = `Brief Notes (Optional)`
+    `Notes`                                              = `Brief Notes (Optional)`,
+    `Group`                                              =  current_group,
+    `Last Updated`                                       =  `Last Updated`   
   ) %>%
   arrange(`Athlete`)
 
@@ -76,6 +91,6 @@ sb_insert_event(
   username = username,
   password = password,
   option   = sb_insert_event_option(
-  table_field = c("Athlete", "Availability", "Notes")
+  table_field = c("Athlete", "Availability", "Notes", "Group", "Last Updated")
   )
 )
