@@ -2,10 +2,9 @@ name: Alpine Availability Automation
 
 on:
   schedule:
-    # Every 2 hours, on the hour (00:00, 02:00, ... UTC). Scheduled workflows
-    # only run on the repo's default branch - this won't fire until this
-    # workflow file is merged there.
-    - cron: "0 */2 * * *"
+    # Every 10 minutes. Scheduled workflows only run on the repo's default
+    # branch - this won't fire until this workflow file is merged there.
+    - cron: "*/10 * * * *"
   workflow_dispatch: {}
 
 # Don't let a slow run overlap with the next scheduled one.
@@ -46,5 +45,5 @@ jobs:
             any::dotenv
             github::Teamworksapp/smartabaseR
 
-      - name: Run alpine_availability_automation.R
-        run: Rscript alpine_availability_automation.R
+      - name: Run send_update_script.R
+        run: Rscript send_update_script.R
